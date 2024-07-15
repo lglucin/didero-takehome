@@ -1,5 +1,6 @@
 import { PageLayout } from '@/components/page-layout';
 import { Stack } from '@/components/stack';
+import SupplierDropdown from '@/components/supplier-dropdown';
 
 export default function Dashboard() {
   return (
@@ -17,7 +18,7 @@ export default function Dashboard() {
         ]}
       />
       <Stack className="p-6" gap="8" width="full">
-        Your code here
+        <SupplierDropdown></SupplierDropdown>
       </Stack>
     </>
   );
