@@ -1,0 +1,30 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Next.js: Debug (Chrome)",
+        "type": "chrome",
+        "request": "launch",
+        "url": "http://localhost:3000",
+        "webRoot": "${workspaceFolder}",
+        "breakOnLoad": true,
+        "sourceMaps": true,
+        "sourceMapPathOverrides": {
+          "webpack:///./*": "${webRoot}/*"
+        }
+      },
+      {
+        "name": "Next.js: Debug (Node.js)",
+        "type": "node",
+        "request": "launch",
+        "runtimeExecutable": "node",
+        "runtimeArgs": [
+          "--inspect",
+          "${workspaceFolder}/node_modules/.bin/next",
+          "dev"
+        ],
+        "port": 9229,
+        "skipFiles": ["<node_internals>/**"]
+      }
+    ]
+  }
