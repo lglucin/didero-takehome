@@ -1,4 +1,4 @@
-'use client'; // Ensure this component is treated as a client component
+'use client';
 
 import React, { useState, useEffect } from 'react';
 import { get } from '@/utils/api';
@@ -9,38 +9,33 @@ interface ApiResponse<T> {
   data: T;
 }
 
-// Function to fetch suppliers from the API
 const fetchSuppliers = async (): Promise<Supplier[]> => {
   const response = await get<ApiResponse<Supplier[]>>('suppliers');
   return response.data;
 };
 
-const SupplierDropdown = () => {
-  // State to store the list of suppliers
+const SupplierDropdown = ({ onSelectSupplier }: { onSelectSupplier: (supplier: Supplier | null) => void }) => {
   const [suppliers, setSuppliers] = useState<Supplier[]>([]);
-  // State to store the currently selected supplier
   const [selectedSupplier, setSelectedSupplier] = useState<Supplier | null>(null);
 
-  // useEffect hook to fetch suppliers when the component mounts
   useEffect(() => {
     const fetchData = async () => {
       try {
         const data = await fetchSuppliers();
-        setSuppliers(data); // Update the state with the fetched suppliers
+        setSuppliers(data);
       } catch (error) {
-        console.error('Error fetching suppliers:', error); // Log any errors
+        console.error('Error fetching suppliers:', error);
       }
     };
 
     fetchData();
   }, []);
 
-  // Function to handle the selection of a supplier from the dropdown
   const handleSelect = (supplier: Supplier | null) => {
     setSelectedSupplier(supplier);
+    onSelectSupplier(supplier); // Pass selected supplier to parent component
   };
 
-  // Function to render the dropdown items
   const renderDropdownItems = () => {
     return suppliers.map((supplier) => (
       <DropdownMenu.Item
