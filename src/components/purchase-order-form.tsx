@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation'; // Import useRouter
 import { useForm, Controller } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -20,6 +21,7 @@ const schema = yup.object().shape({
 });
 
 const PurchaseOrderForm = () => {
+  const router = useRouter(); // Initialize useRouter
   const [selectedSupplier, setSelectedSupplier] = useState<Supplier | null>(null);
   const [selectedItem, setSelectedItem] = useState<Item | null>(null);
   const { control, handleSubmit, formState: { errors } } = useForm({
@@ -69,7 +71,7 @@ const PurchaseOrderForm = () => {
     try {
       const response = await post<PurchaseOrder>('orders', newOrder);
       console.log('Order submitted successfully:', response);
-      // Redirect to orders list or show success message
+      router.push('/orders'); // Redirect to orders list page
     } catch (error) {
       console.error('Error submitting order:', error);
     }
