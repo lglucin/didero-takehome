@@ -5,6 +5,7 @@ import { PageLayout } from '@/components/page-layout';
 import { Stack } from '@/components/stack';
 import SupplierDropdown from '@/components/supplier-dropdown';
 import ItemsDropdown from '@/components/items-dropdown';
+import PurchaseOrderForm from '@/components/purchase-order-form';
 import { Supplier } from '@/types';
 
 export default function Dashboard() {
@@ -24,8 +25,7 @@ export default function Dashboard() {
         ]}
       />
       <Stack className="p-6" gap="8" width="full">
-        <SupplierDropdown onSelectSupplier={setSelectedSupplier} />
-        <ItemsDropdown supplier={selectedSupplier} />
+        <PurchaseOrderForm></PurchaseOrderForm>
       </Stack>
     </>
   );
