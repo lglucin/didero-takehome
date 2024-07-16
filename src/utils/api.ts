@@ -30,5 +30,6 @@ export const update = async <T>(endpoint: string, body: object): Promise<T> => {
 };
 
 export const patch = async <T>(endpoint: string, body: object): Promise<T> => {
+  console.log("In WRETCH: " + JSON.stringify(body));
   return wretch(`${URL}/api/${endpoint}`).patch(body).json();
 };

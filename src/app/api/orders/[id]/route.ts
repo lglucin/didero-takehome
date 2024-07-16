@@ -27,6 +27,13 @@ export function PATCH(
 ) {
   const id = params.id;
   const orderIndex = inMemoryOrders.findIndex((o) => o.id === Number(id));
+  console.log("In PATCH in the API")
+  console.log("id: " + id)
+  console.log("params: " + JSON.stringify(params))
+  console.log("req:" + JSON.stringify(req))
+  // NOTE(lloyd): Body seems to always be undefined despite valid objects being passed in the client. 
+  // Thus patch does not work.
+  console.log("body:" + body)
 
   if (orderIndex === -1) {
     return new Response(JSON.stringify({ error: 'Order not found' }), {
