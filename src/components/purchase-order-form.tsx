@@ -167,7 +167,7 @@ const PurchaseOrderForm = () => {
             <DatePickerInput
               selected={field.value}
               onChange={field.onChange}
-              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
+              className="mt-1 block w-full shadow-sm"
             />
           )}
         />
