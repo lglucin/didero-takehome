@@ -6,12 +6,17 @@ import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import SupplierDropdown from '@/components/supplier-dropdown';
 import ItemsDropdown from '@/components/items-dropdown';
+import { DatePickerInput } from '@/components/date-picker-input';
 import { Supplier, Item, PurchaseOrder, PurchaseOrderStatus, TDateISO } from '@/types';
 import { post } from '@/utils/api';
 
 // Validation schema using yup
 const schema = yup.object().shape({
   quantity: yup.number().min(1).required('Quantity is required'),
+  shippingAddressLine1: yup.string().required('Shipping Address is required'),
+  internalNotes: yup.string().required('Internal Notes are required'),
+  vendorNotes: yup.string().required('Vendor Notes are required'),
+  requestedShipDate: yup.date().nullable().required('Requested Ship Date is required'),
 });
 
 const PurchaseOrderForm = () => {
@@ -21,7 +26,17 @@ const PurchaseOrderForm = () => {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = async (data: { quantity: number }) => {
+  const onSubmit = async (data: {
+    quantity: number;
+    shippingAddressLine1: string;
+    internalNotes: string;
+    vendorNotes: string;
+    requestedShipDate: Date | null;
+  }) => {
+    console.log('Form Data:', data);
+    console.log('Selected Supplier:', selectedSupplier);
+    console.log('Selected Item:', selectedItem);
+
     if (!selectedSupplier || !selectedItem) {
       alert("Please select a supplier and item.");
       return;
@@ -32,12 +47,12 @@ const PurchaseOrderForm = () => {
       approvals: [],
       poNumber: `PO-${Date.now()}`,
       placedById: 1,
-      shippingAddressLine1: '123 Fake Street',
-      internalNotes: 'New Purchase Order',
-      vendorNotes: 'New Purchase Order',
+      shippingAddressLine1: data.shippingAddressLine1,
+      internalNotes: data.internalNotes,
+      vendorNotes: data.vendorNotes,
       orderStatus: PurchaseOrderStatus.Draft,
       placementTime: new Date().toISOString() as TDateISO, // Ensure the date is in ISO format
-      requestedShipDate: null,
+      requestedShipDate: data.requestedShipDate ? data.requestedShipDate.toISOString() as TDateISO : null,
       items: [{
         id: Date.now(),
         itemId: selectedItem.id,
@@ -85,6 +100,78 @@ const PurchaseOrderForm = () => {
           )}
         />
         {errors.quantity && <p className="text-red-600">{errors.quantity.message}</p>}
+      </div>
+      <div>
+        <label htmlFor="shippingAddressLine1" className="block text-sm font-medium text-gray-700">
+          Shipping Address
+        </label>
+        <Controller
+          name="shippingAddressLine1"
+          control={control}
+          defaultValue=""
+          render={({ field }) => (
+            <input
+              type="text"
+              id="shippingAddressLine1"
+              {...field}
+              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
+            />
+          )}
+        />
+        {errors.shippingAddressLine1 && <p className="text-red-600">{errors.shippingAddressLine1.message}</p>}
+      </div>
+      <div>
+        <label htmlFor="internalNotes" className="block text-sm font-medium text-gray-700">
+          Internal Notes
+        </label>
+        <Controller
+          name="internalNotes"
+          control={control}
+          defaultValue=""
+          render={({ field }) => (
+            <textarea
+              id="internalNotes"
+              {...field}
+              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
+            />
+          )}
+        />
+        {errors.internalNotes && <p className="text-red-600">{errors.internalNotes.message}</p>}
+      </div>
+      <div>
+        <label htmlFor="vendorNotes" className="block text-sm font-medium text-gray-700">
+          Vendor Notes
+        </label>
+        <Controller
+          name="vendorNotes"
+          control={control}
+          defaultValue=""
+          render={({ field }) => (
+            <textarea
+              id="vendorNotes"
+              {...field}
+              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
+            />
+          )}
+        />
+        {errors.vendorNotes && <p className="text-red-600">{errors.vendorNotes.message}</p>}
+      </div>
+      <div>
+        <label htmlFor="requestedShipDate" className="block text-sm font-medium text-gray-700">
+          Requested Ship Date
+        </label>
+        <Controller
+          name="requestedShipDate"
+          control={control}
+          render={({ field }) => (
+            <DatePickerInput
+              selected={field.value}
+              onChange={field.onChange}
+              className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm"
+            />
+          )}
+        />
+        {errors.requestedShipDate && <p className="text-red-600">{errors.requestedShipDate.message}</p>}
       </div>
       <button type="submit" className="inline-flex items-center px-4 py-2 bg-blue-500 text-white rounded-md">
         Submit Order
