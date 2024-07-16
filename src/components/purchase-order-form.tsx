@@ -174,6 +174,7 @@ const PurchaseOrderForm = () => {
                     selected={field.value}
                     onChange={field.onChange}
                     className="mt-1 block w-full focus:ring-blue-500 focus:border-blue-500"
+                    minDate={new Date()}
                   />
                 )}
               />
